@@ -1,23 +1,26 @@
 package model;
 
+import helpers.Helper;
+import io.qameta.allure.Step;
+
 public class CourierModel {
     private String login;
     private String password;
     private String firstName;
-    private int id;
+
 
     public CourierModel(){}
-
-    public CourierModel(String login, String password) {
-        this.login = login;
-        this.password = password;
+    public CourierModel(String login, String password, String firstName){
+        this.login = Helper.uniqueizeString(login);
+        this.password = Helper.uniqueizeString(password);
+        this.firstName = Helper.uniqueizeString(firstName);
     }
 
-    public CourierModel(String login, String password, String firstName) {
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
+    public CourierModel(String login, String password){
+        this.login = Helper.uniqueizeString(login);
+        this.password = Helper.uniqueizeString(password);
     }
+
 
     public String getLogin() {
         return login;
@@ -43,11 +46,20 @@ public class CourierModel {
         this.firstName = firstName;
     }
 
-    public int getId() {
-        return id;
+
+    @Step("Create Courier object")
+    public static CourierModel createCourier(String login, String password, String name){
+        return new CourierModel(login, password, name);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    @Step("Make Courier object without login")
+    public void deleteLoginFromCourier(){
+        setLogin(null);
     }
+
+    @Step("Make Courier object without password")
+    public void deletePassFromCourier(){
+        setPassword(null);
+    }
+
 }
