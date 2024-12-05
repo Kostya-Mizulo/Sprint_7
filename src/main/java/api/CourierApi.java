@@ -1,10 +1,14 @@
 package api;
 
 import io.restassured.response.Response;
-import model.CourierModel;
+import io.restassured.specification.ResponseSpecification;
+import model.CourierLoginModel;
+import model.CourierRegistrationModel;
 import io.qameta.allure.Step;
+import org.apache.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 
 public class CourierApi extends RestApi{
     public static final String CREATE_COURIER_URL = "/api/v1/courier";
@@ -13,7 +17,7 @@ public class CourierApi extends RestApi{
 
 
     @Step("Send POST request to create new courier")
-    public Response createCourier(CourierModel courier){
+    public Response createCourier(CourierRegistrationModel courier){
         Response response = given()
                 .spec(requestSpecification())
                 .and()
@@ -26,7 +30,7 @@ public class CourierApi extends RestApi{
 
 
     @Step("Send POST request to authorized courier")
-    public Response authCourier(CourierModel courier){
+    public Response authCourier(CourierLoginModel courier){
         Response response = given()
                 .spec(requestSpecification())
                 .and()
@@ -38,16 +42,14 @@ public class CourierApi extends RestApi{
     }
 
     @Step("Delete courier")
-    public void deleteCourier(CourierModel courier) {
-        Response response = authCourier(courier);
-        int id = 0;
+    public void deleteCourier(CourierRegistrationModel courier) {
+        CourierLoginModel courierLogin = CourierLoginModel.createCourierLoginModelObject(courier);
+        Response response = authCourier(courierLogin);
 
         if (response.jsonPath().get("id") != null) {
-            id = response.jsonPath().getInt("id");
+             int id = response.jsonPath().getInt("id");
+            sendMethodToDeleteCourier(id);
         }
-
-        sendMethodToDeleteCourier(id);
-
     }
 
     @Step("Send DELETE method to delete courier by id")

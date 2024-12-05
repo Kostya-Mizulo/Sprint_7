@@ -1,7 +1,8 @@
 import api.CourierApi;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
-import model.CourierModel;
+import model.CourierLoginModel;
+import model.CourierRegistrationModel;
 import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
@@ -12,15 +13,18 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class CourierLoginTest {
     private CourierApi courierApi;
-    private CourierModel courier;
+    private CourierRegistrationModel courierRegistrationModel;
+    private CourierLoginModel courierLoginModel;
     @Before
-    public void invokeRequestForLoginCourier(){
+    public void setUp(){
         courierApi = new CourierApi();
+        courierRegistrationModel = CourierRegistrationModel.createCourier("login", "password", "Ivan");
+        courierApi.createCourier(courierRegistrationModel);
     }
 
     @After
     public void cleanUp(){
-        courierApi.deleteCourier(courier);
+        courierApi.deleteCourier(courierRegistrationModel);
     }
 
 
@@ -28,10 +32,10 @@ public class CourierLoginTest {
     @Test
     public void checkCourierCouldBeAuthorizedTest() {
 
-        courier = CourierModel.createCourier("login", "pass", "Ivan");
-        courierApi.createCourier(courier);
+        courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
 
-        Response response = courierApi.authCourier(courier);
+
+        Response response = courierApi.authCourier(courierLoginModel);
 
         response.then().log().all()
                 .assertThat()
