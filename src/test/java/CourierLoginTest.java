@@ -8,8 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 
 public class CourierLoginTest {
     private CourierApi courierApi;
@@ -28,7 +27,7 @@ public class CourierLoginTest {
     }
 
 
-    @Description("Check courier created successfully")
+    @Description("Check existing courier could authorize")
     @Test
     public void checkCourierCouldBeAuthorizedTest() {
 
@@ -43,4 +42,70 @@ public class CourierLoginTest {
                 .and()
                 .body("id", notNullValue());
     }
+
+    @Description("Check impossible to authorize without login")
+    @Test
+    public void checkAuthorizeWithoutLoginReturnsErrorTest(){
+        courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
+        courierLoginModel.setLogin(null);
+
+        Response response = courierApi.authCourier(courierLoginModel);
+
+        response.then().log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .and()
+                .body("message", equalTo("Недостаточно данных для входа"));
+    }
+
+
+    @Description("Check impossible to authorize without password")
+    @Test
+    public void checkAuthorizeWithoutPasswordReturnsErrorTest(){
+        courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
+        courierLoginModel.setPassword(null);
+
+        Response response = courierApi.authCourier(courierLoginModel);
+
+        response.then().log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .and()
+                .body("message", equalTo("Недостаточно данных для входа"));
+    }
+
+
+    @Description("Check authorization with not existing key login-pass returns not found error")
+    @Test
+    public void checkAuthorizeWithNotExistingKeyLoginPassReturnsNotFoundErrorTest(){
+        courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
+        courierLoginModel.setPassword(courierLoginModel.getPassword() + "Wrong");
+
+        Response response = courierApi.authCourier(courierLoginModel);
+
+        response.then().log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
+                .and()
+                .body("message", equalTo("Учетная запись не найдена"));
+    }
+
+
+    @Description("Check authorization with not existing courier returns not found error")
+    @Test
+    public void checkAuthorizeWithNotExistingCourierReturnsNotFoundErrorTest(){
+        courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
+        courierLoginModel.setLogin(courierLoginModel.getLogin() + "new");
+        courierLoginModel.setPassword(courierLoginModel.getPassword() + "new");
+
+        Response response = courierApi.authCourier(courierLoginModel);
+
+        response.then().log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
+                .and()
+                .body("message", equalTo("Учетная запись не найдена"));
+    }
+
+
 }
