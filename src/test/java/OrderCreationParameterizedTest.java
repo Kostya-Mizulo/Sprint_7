@@ -1,4 +1,5 @@
 import api.OrderApi;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import model.OrderCreationModel;
 import org.apache.http.HttpStatus;
@@ -55,6 +56,7 @@ public class OrderCreationParameterizedTest {
 
 
     @Test
+    @DisplayName("Check order created normally with different color inputs")
     public void checkOrderCreatedWithDifferentColorInputsTest(){
         orderCreationModel.setColor(color);
 

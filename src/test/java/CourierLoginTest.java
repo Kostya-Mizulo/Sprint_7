@@ -1,5 +1,6 @@
 import api.CourierApi;
 import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import model.CourierLoginModel;
 import model.CourierRegistrationModel;
@@ -27,7 +28,7 @@ public class CourierLoginTest {
     }
 
 
-    @Description("Check existing courier could authorize")
+    @DisplayName("Check existing courier could authorize")
     @Test
     public void checkCourierCouldBeAuthorizedTest() {
 
@@ -43,7 +44,7 @@ public class CourierLoginTest {
                 .body("id", notNullValue());
     }
 
-    @Description("Check impossible to authorize without login")
+    @DisplayName("Check impossible to authorize without login")
     @Test
     public void checkAuthorizeWithoutLoginReturnsErrorTest(){
         courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
@@ -59,7 +60,7 @@ public class CourierLoginTest {
     }
 
 
-    @Description("Check impossible to authorize without password")
+    @DisplayName("Check impossible to authorize without password")
     @Test
     public void checkAuthorizeWithoutPasswordReturnsErrorTest(){
         courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
@@ -75,7 +76,7 @@ public class CourierLoginTest {
     }
 
 
-    @Description("Check authorization with not existing key login-pass returns not found error")
+    @DisplayName("Check authorization with not existing key login-pass returns not found error")
     @Test
     public void checkAuthorizeWithNotExistingKeyLoginPassReturnsNotFoundErrorTest(){
         courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);
@@ -91,7 +92,7 @@ public class CourierLoginTest {
     }
 
 
-    @Description("Check authorization with not existing courier returns not found error")
+    @DisplayName("Check authorization with not existing courier returns not found error")
     @Test
     public void checkAuthorizeWithNotExistingCourierReturnsNotFoundErrorTest(){
         courierLoginModel = CourierLoginModel.createCourierLoginModelObject(courierRegistrationModel);

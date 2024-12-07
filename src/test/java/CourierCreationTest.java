@@ -1,5 +1,6 @@
 import api.CourierApi;
 import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import model.CourierRegistrationModel;
 import org.apache.http.HttpStatus;
@@ -26,7 +27,7 @@ public class CourierCreationTest {
     }
 
 
-    @Description("Check courier created successfully")
+    @DisplayName("Check courier created successfully")
     @Test
     public void checkCourierCouldBeCreatedTest() {
 
@@ -42,7 +43,7 @@ public class CourierCreationTest {
     }
 
 
-    @Description("Check courier created successfully without name")
+    @DisplayName("Check courier created successfully without name")
     @Test
     public void checkCourierCouldBeCreatedWithoutNameTest() {
 
@@ -58,7 +59,7 @@ public class CourierCreationTest {
     }
 
 
-    @Description("Check impossible to create more then one same courier")
+    @DisplayName("Check impossible to create more then one same courier")
     @Test
     public void checkCreationOfSecondSameCourierReturnsErrorTest(){
         courierRegistrationModel = CourierRegistrationModel.createCourier("login", "pass", "Ivan");
@@ -74,9 +75,9 @@ public class CourierCreationTest {
     }
 
 
-    @Description("Check impossible to create courier without login")
+    @DisplayName("Check impossible to create courier without login")
     @Test
-    public void checkCreationOfCourierWithoutLoginIsImpossible(){
+    public void checkCreationOfCourierWithoutLoginIsImpossibleTest(){
         courierRegistrationModel = CourierRegistrationModel.createCourier("login", "pass", "Ivan");
         courierRegistrationModel.deleteLoginFromCourier();
 
@@ -90,9 +91,9 @@ public class CourierCreationTest {
     }
 
 
-    @Description("Check impossible to create courier without password")
+    @DisplayName("Check impossible to create courier without password")
     @Test
-    public void checkCreationOfCourierWithoutPassIsImpossible(){
+    public void checkCreationOfCourierWithoutPassIsImpossibleTest(){
         courierRegistrationModel = CourierRegistrationModel.createCourier("login", "pass", "Ivan");
         courierRegistrationModel.deletePassFromCourier();
 
