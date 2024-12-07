@@ -2,6 +2,7 @@ import api.OrderApi;
 import io.restassured.response.Response;
 import model.OrderCreationModel;
 import org.apache.http.HttpStatus;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +17,13 @@ public class OrderCreationParameterizedTest {
     private final List<String> color;
     private OrderApi orderApi;
     private OrderCreationModel orderCreationModel;
+    private int track;
 
     public OrderCreationParameterizedTest(List<String> color) {
         this.color = color;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Order with colors: {0}")
     public static Object[] getScootersColor() {
         return new Object[] {
                 List.of("BLACK"),
@@ -46,6 +48,11 @@ public class OrderCreationParameterizedTest {
         orderCreationModel.setComment("Comment");
     }
 
+    @After
+    public void cleanUp(){
+        orderApi.deleteOrder(track);
+    }
+
 
     @Test
     public void checkOrderCreatedWithDifferentColorInputsTest(){
@@ -59,6 +66,7 @@ public class OrderCreationParameterizedTest {
                 .and()
                 .body("track", notNullValue());
 
-        int track = response.jsonPath().getInt("track");
+        if (response.jsonPath().getInt("track") != 0)
+            track = response.jsonPath().getInt("track");
     }
 }
