@@ -20,9 +20,11 @@ public class OrderCreationParameterizedTest {
     private OrderCreationModel orderCreationModel;
     private int track;
 
+
     public OrderCreationParameterizedTest(List<String> color) {
         this.color = color;
     }
+
 
     @Parameterized.Parameters(name = "Order with colors: {0}")
     public static Object[] getScootersColor() {
@@ -34,6 +36,7 @@ public class OrderCreationParameterizedTest {
                 null
         };
     }
+
 
     @Before
     public void setup(){
@@ -49,6 +52,7 @@ public class OrderCreationParameterizedTest {
         orderCreationModel.setComment("Comment");
     }
 
+
     @After
     public void cleanUp(){
         orderApi.deleteOrder(track);
@@ -59,7 +63,6 @@ public class OrderCreationParameterizedTest {
     @DisplayName("Check order created normally with different color inputs")
     public void checkOrderCreatedWithDifferentColorInputsTest(){
         orderCreationModel.setColor(color);
-
         Response response = orderApi.createCourier(orderCreationModel);
 
         response.then().log().all()

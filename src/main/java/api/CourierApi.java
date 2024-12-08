@@ -31,7 +31,6 @@ public class CourierApi extends RestApi{
 
     @Step("Send POST request to authorized courier")
     public Response authCourier(CourierLoginModel courier){
-
             Response response = given()
                     .spec(requestSpecification())
                     .and()
@@ -40,8 +39,8 @@ public class CourierApi extends RestApi{
                     .post(AUTH_COURIER_URL);
 
             return response;
-
     }
+
 
     @Step("Delete courier")
     public void deleteCourier(CourierRegistrationModel courier) {

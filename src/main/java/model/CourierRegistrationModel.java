@@ -10,11 +10,14 @@ public class CourierRegistrationModel {
 
 
     public CourierRegistrationModel(){}
+
+
     public CourierRegistrationModel(String login, String password, String firstName){
         this.login = Helper.uniqueizeString(login);
         this.password = Helper.uniqueizeString(password);
         this.firstName = Helper.uniqueizeString(firstName);
     }
+
 
     public CourierRegistrationModel(String login, String password){
         this.login = Helper.uniqueizeString(login);
@@ -26,21 +29,26 @@ public class CourierRegistrationModel {
         return login;
     }
 
+
     public void setLogin(String login) {
         this.login = login;
     }
+
 
     public String getPassword() {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
 
+
     public String getFirstName() {
         return firstName;
     }
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -52,19 +60,21 @@ public class CourierRegistrationModel {
         return new CourierRegistrationModel(login, password, name);
     }
 
+
     @Step("Create CourierRegistrationModel object without name")
     public static CourierRegistrationModel createCourier(String login, String password){
         return new CourierRegistrationModel(login, password);
     }
+
 
     @Step("Make CourierRegistrationModel object without login")
     public void deleteLoginFromCourier(){
         setLogin(null);
     }
 
+
     @Step("Make CourierRegistrationModel object without password")
     public void deletePassFromCourier(){
         setPassword(null);
     }
-
 }

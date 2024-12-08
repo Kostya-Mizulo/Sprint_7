@@ -12,8 +12,8 @@ public class OrdersListTest {
     @DisplayName("Check method returns all orders from system")
     public void checkMethodReturnsAllOrdersInSystemTest(){
         OrderApi orderApi = new OrderApi();
-
         Response response = orderApi.getAllOrders();
+
         response
                 .then()
                 .assertThat()
